@@ -104,10 +104,10 @@ h1, h2, h3, h4, h5, h6 {
  * Links
  */
 a {
-  color: #1764c1;
+  color: #ff2b2b;
   text-decoration: none; }
   a:visited {
-    color: #3eaad8; }
+    color: #c40000; }
   a:hover {
     color: #222;
     text-decoration: underline; }
@@ -116,8 +116,8 @@ a {
  * Blockquotes
  */
 blockquote {
-  color: #00a9ff;
-  border-left: 4px solid #aaebff;
+  color: #ff0000;
+  border-left: 4px solid #ffcccc;
   padding-left: 15px;
   font-size: 18px;
   letter-spacing: -1px;
@@ -183,14 +183,14 @@ pre {
   height: 16px;
   vertical-align: middle; }
   .icon > svg path {
-    fill: #00a9ff; }
+    fill: #ff0000; }
 
 /**
  * Site header
  */
 .site-header {
-  border-top: 5px solid #2962c4;
-  border-bottom: 1px solid #099ce5;
+  border-top: 5px solid #b30000;
+  border-bottom: 1px solid #ffcccc;
   min-height: 56px;
   position: relative; }
 
@@ -203,7 +203,7 @@ pre {
   /*     text-transform:uppercase; */
   /*     font-variant: small-caps; */ }
   .site-title, .site-title:visited {
-    color: #2962c4; }
+    color: #b30000; }
 
 .site-nav {
   float: right;
@@ -221,7 +221,7 @@ pre {
       top: 9px;
       right: 30px;
       background-color: #aaa;
-      border: 1px solid #aaebff;
+      border: 1px solid #ffcccc;
       border-radius: 5px;
       text-align: right; }
       .site-nav .menu-icon {
@@ -236,7 +236,7 @@ pre {
           width: 18px;
           height: 15px; }
           .site-nav .menu-icon > svg path {
-            fill: #2962c4; }
+            fill: #b30000; }
       .site-nav .trigger {
         clear: both;
         display: none; }
@@ -251,10 +251,10 @@ pre {
  * Site footer
  */
 .site-footer {
-  border-top: 1px solid #aaebff;
+  border-top: 1px solid #ffcccc;
   padding: 30px 0;
   position: relative;
-  top: 1px; }
+  top: 363px; }
 
 .footer-heading {
   font-size: 18px;
@@ -267,7 +267,7 @@ pre {
 
 .footer-col-wrapper {
   font-size: 15px;
-  color: #00a9ff;
+  color: #ff0000;
   margin-left: -15px; }
 
 .footer-col {
@@ -318,7 +318,7 @@ pre {
 
 .post-meta {
   font-size: 14px;
-  color: #00a9ff; }
+  color: #ff0000; }
 
 .post-link {
   display: block;

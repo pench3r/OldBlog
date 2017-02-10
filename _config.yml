@@ -6,8 +6,22 @@ description: > # this means to ignore newlines until "baseurl:"
 baseurl: 
 twitter_username: ang
 github_username:  pench3r
+# comments
 disqus:
     shortname: pench3r
+
+default_locale: "en"
+
+locales:
+    en:
+        Next: "Next"
+        Previous: "Prev"
+
+
+
+gems: [jekyll-paginate]
+paginate: 8
+paginate_path: "/page:num/"
 
 # Build settings
 markdown: kramdown
