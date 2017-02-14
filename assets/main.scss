@@ -131,7 +131,7 @@ blockquote {
 pre,
 code {
   font-size: 15px;
-  border: 1px solid #ff6666;
+  border: 1px solid #75a6ef;
   border-radius: 3px;
   /*     background-color: #111; */
   background-color: rgba(0, 0, 0, 0.3);
@@ -361,12 +361,15 @@ pre {
  */
 .highlight {
   /*     background: #fff; */ }
+	
+  .highlighter-rouge .highlight {
+	background-color: #d9d9db; }
   .highlight .c {
     color: #998;
     font-style: italic; }
   .highlight .err {
     color: #a61717;
-    background-color: #e3d2d2; }
+    background-color: #d9d9db; }
   .highlight .k {
     font-weight: bold; }
   .highlight .o {

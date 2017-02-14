@@ -1,8 +1,20 @@
 ---
-#
-# You don't need to edit this file, it's empty on purpose.
-# Edit minima's home layout instead if you wanna make some changes
-# See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-#
-layout: home
+layout: default
+title: Blog
 ---
+<div class="page-content wc-container">
+  <h1>Blog</h1>  
+  {% for post in paginator.posts %}
+  	{% capture currentyear %}{{post.date | date: "%Y"}}{% endcapture %}
+  	{% if currentyear != year %}
+    	{% unless forloop.first %}</ul>{% endunless %}
+    		<h5>{{ currentyear }}</h5>
+    		<ul class="posts">
+    		{% capture year %}{{currentyear}}{% endcapture %} 
+  		{% endif %}
+    <li>
+		<span class="post-meta">{{ post.date | date: "%m-%d" }}</span>
+		<br>
+		<a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+	</li>
+{% endfor %}

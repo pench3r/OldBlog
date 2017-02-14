@@ -3,7 +3,7 @@ author: Pench3r
 email: nageshangzei@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
     Developer | Hacker
-baseurl: 
+baseurl:
 twitter_username: ang
 github_username:  pench3r
 # comments
@@ -20,7 +20,7 @@ locales:
 
 
 gems: [jekyll-paginate]
-paginate: 8
+paginate: 12
 paginate_path: "/page:num/"
 
 # Build settings
