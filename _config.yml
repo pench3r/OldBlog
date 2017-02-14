@@ -20,7 +20,7 @@ locales:
 
 
 gems: [jekyll-paginate]
-paginate: 12
+paginate: 10
 paginate_path: "/page:num/"
 
 # Build settings
