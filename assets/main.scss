@@ -152,6 +152,26 @@ pre {
 /**
  * Wrapper
  */
+.header-wrapper {
+	width: 960px;
+	position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 0px;
+    padding-left: 0px; }
+	@media screen and (min-width: 1279px) {
+	.header-wrapper {
+		position: relative;
+		width: 1120px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		margin-right: auto;
+		margin-left: auto;
+		padding-top: 0px;
+		padding-bottom: 0px;
+		padding-left: 0px;
+		padding-right: 0px;} }
+
 .wrapper {
   max-width: -webkit-calc(800px - (30px * 2));
   max-width: calc(800px - (30px * 2));
@@ -203,8 +223,11 @@ pre {
   /*     text-transform:uppercase; */
   /*     font-variant: small-caps; */ }
   .site-title, .site-title:visited {
+	font-family: cursive;
 	font-size: 250%;
     color: #2962c4; }
+  .site-title:hover {
+	text-decoration: none; }
 
 .site-nav {
   float: right;
