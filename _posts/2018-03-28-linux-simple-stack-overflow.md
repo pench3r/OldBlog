@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Linux Simple Stack overflow"
-----
+---
 
 #### 环境准备 ####
 
