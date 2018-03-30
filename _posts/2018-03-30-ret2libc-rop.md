@@ -21,7 +21,7 @@ void vul_func() {
     read(STDIN_FILENO, msg, 256);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char \*argv[]) {
     vul_func();
     write(STDOUT_FILENO,"ROP test\n", 9); 
     return 0;
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     
     socat TCP4-LISTEN:10000,fork exec:./vul		# 通过网络监听加载vul
 
-	nc 127.0.0.1 1000		# 客户端连接
+	  nc 127.0.0.1 1000		# 客户端连接
 
 #### 0x01 ret2libc ####
 
