@@ -12,21 +12,20 @@ ps:对于该篇文章使用的技术，最重要的一点基础是，清楚函�
 
 漏洞程序：
 
-<pre>#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <unistd.h>
 
-void vul_func() {
-    char msg[128];
-    read(STDIN_FILENO, msg, 256);
-}
+    void vul_func() {
+        char msg[128];
+        read(STDIN_FILENO, msg, 256);
+    }
 
-int main(int argc, char \*argv[]) {
-    vul_func();
-    write(STDOUT_FILENO,"ROP test\n", 9); 
-    return 0;
-}
-</pre>
+    int main(int argc, char \*argv[]) {
+        vul_func();
+        write(STDOUT_FILENO,"ROP test\n", 9); 
+        return 0;
+    }
 
 
 运行:
