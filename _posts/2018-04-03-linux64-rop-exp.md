@@ -77,23 +77,23 @@ x64中最常用ROP的是属于`__libc_csu_init`，但是由于它能控制的参
 
 首先获取内存地址，根据偏移来计算`system`的地址和`/bin/sh`的地址，由于使用ROPgadget并没有搜索到满足我们需求的`ROP`，但是在libc.so中，__libc_csu_init中提供了很有效的ROP链,使用`objdump -d -M intel vul64`查看关于`__libc_csu_init`
 
-<pre>0000000000400590 <__libc_csu_init>:
+<pre>0000000000400590 __libc_csu_init:
   400590:   41 57                   push   r15 
   400592:   41 56                   push   r14 
   400594:   49 89 d7                mov    r15,rdx
   400597:   41 55                   push   r13 
   400599:   41 54                   push   r12 
-  40059b:   4c 8d 25 6e 08 20 00    lea    r12,[rip+0x20086e]        # 600e10 <__frame_dummy_init_array_entry>  4005a2:   55                      push   rbp
-  4005a3:   48 8d 2d 6e 08 20 00    lea    rbp,[rip+0x20086e]        # 600e18 <__init_array_end>
+  40059b:   4c 8d 25 6e 08 20 00    lea    r12,[rip+0x20086e]        # 600e10 __frame_dummy_init_array_entry  4005a2:   55                      push   rbp
+  4005a3:   48 8d 2d 6e 08 20 00    lea    rbp,[rip+0x20086e]        # 600e18 __init_array_end
   4005aa:   53                      push   rbx 
   4005ab:   41 89 fd                mov    r13d,edi
   4005ae:   49 89 f6                mov    r14,rsi
   4005b1:   4c 29 e5                sub    rbp,r12
   4005b4:   48 83 ec 08             sub    rsp,0x8
   4005b8:   48 c1 fd 03             sar    rbp,0x3
-  4005bc:   e8 3f fe ff ff          call   400400 <_init>
+  4005bc:   e8 3f fe ff ff          call   400400 
   4005c1:   48 85 ed                test   rbp,rbp
-  4005c4:   74 20                   je     4005e6 <__libc_csu_init+0x56>
+  4005c4:   74 20                   je     4005e6 
   4005c6:   31 db                   xor    ebx,ebx
   4005c8:   0f 1f 84 00 00 00 00    nop    DWORD PTR [rax+rax*1+0x0]
   4005cf:   00  
@@ -103,7 +103,7 @@ x64中最常用ROP的是属于`__libc_csu_init`，但是由于它能控制的参
   4005d9:   41 ff 14 dc             call   QWORD PTR [r12+rbx*8]
   4005dd:   48 83 c3 01             add    rbx,0x1
   4005e1:   48 39 dd                cmp    rbp,rbx
-  4005e4:   75 ea                   jne    4005d0 <__libc_csu_init+0x40>
+  4005e4:   75 ea                   jne    4005d0 
   4005e6:   48 83 c4 08             add    rsp,0x8
   4005ea:   5b                      pop    rbx 		# 必须为0
   4005eb:   5d                      pop    rbp 		# 必须为1
