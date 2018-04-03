@@ -128,46 +128,46 @@ system_addr = write_addr - (libc.symbols['write'] - libc.symbols['system'])</pre
 
 <strong>第二种`_dl_runtime_resolve_xsave`:</strong>
 
-<pre>0x00007ffff7ded240 <+0>:	push   rbx
-   0x00007ffff7ded241 <+1>:	mov    rbx,rsp
-   0x00007ffff7ded244 <+4>:	and    rsp,0xffffffffffffffc0
-   0x00007ffff7ded248 <+8>:	sub    rsp,QWORD PTR [rip+0x20f5b9]        # 0x7ffff7ffc808 <_rtld_global_ro+168>
-   0x00007ffff7ded24f <+15>:	mov    QWORD PTR [rsp],rax
-   0x00007ffff7ded253 <+19>:	mov    QWORD PTR [rsp+0x8],rcx
-   0x00007ffff7ded258 <+24>:	mov    QWORD PTR [rsp+0x10],rdx
-   0x00007ffff7ded25d <+29>:	mov    QWORD PTR [rsp+0x18],rsi
-   0x00007ffff7ded262 <+34>:	mov    QWORD PTR [rsp+0x20],rdi
-   0x00007ffff7ded267 <+39>:	mov    QWORD PTR [rsp+0x28],r8
-   0x00007ffff7ded26c <+44>:	mov    QWORD PTR [rsp+0x30],r9
-   0x00007ffff7ded271 <+49>:	mov    eax,0xee
-   0x00007ffff7ded276 <+54>:	xor    edx,edx
-   0x00007ffff7ded278 <+56>:	mov    QWORD PTR [rsp+0x240],rdx
-   0x00007ffff7ded280 <+64>:	mov    QWORD PTR [rsp+0x248],rdx
-   0x00007ffff7ded288 <+72>:	mov    QWORD PTR [rsp+0x250],rdx
-   0x00007ffff7ded290 <+80>:	mov    QWORD PTR [rsp+0x258],rdx
-   0x00007ffff7ded298 <+88>:	mov    QWORD PTR [rsp+0x260],rdx
-   0x00007ffff7ded2a0 <+96>:	mov    QWORD PTR [rsp+0x268],rdx
-   0x00007ffff7ded2a8 <+104>:	mov    QWORD PTR [rsp+0x270],rdx
-   0x00007ffff7ded2b0 <+112>:	mov    QWORD PTR [rsp+0x278],rdx
-   0x00007ffff7ded2b8 <+120>:	xsave  [rsp+0x40]
-   0x00007ffff7ded2bd <+125>:	mov    rsi,QWORD PTR [rbx+0x10]
-   0x00007ffff7ded2c1 <+129>:	mov    rdi,QWORD PTR [rbx+0x8]
-   0x00007ffff7ded2c5 <+133>:	call   0x7ffff7de6630 <_dl_fixup>
-   0x00007ffff7ded2ca <+138>:	mov    r11,rax
-   0x00007ffff7ded2cd <+141>:	mov    eax,0xee
-   0x00007ffff7ded2d2 <+146>:	xor    edx,edx
-   0x00007ffff7ded2d4 <+148>:	xrstor [rsp+0x40]		# dl_runtime_resolve 是没有这条指令
-   0x00007ffff7ded2d9 <+153>:	mov    r9,QWORD PTR [rsp+0x30]
-   0x00007ffff7ded2de <+158>:	mov    r8,QWORD PTR [rsp+0x28]
-   0x00007ffff7ded2e3 <+163>:	mov    rdi,QWORD PTR [rsp+0x20]
-   0x00007ffff7ded2e8 <+168>:	mov    rsi,QWORD PTR [rsp+0x18]
-   0x00007ffff7ded2ed <+173>:	mov    rdx,QWORD PTR [rsp+0x10]
-   0x00007ffff7ded2f2 <+178>:	mov    rcx,QWORD PTR [rsp+0x8]
-   0x00007ffff7ded2f7 <+183>:	mov    rax,QWORD PTR [rsp]
-   0x00007ffff7ded2fb <+187>:	mov    rsp,rbx
-   0x00007ffff7ded2fe <+190>:	mov    rbx,QWORD PTR [rsp]
-   0x00007ffff7ded302 <+194>:	add    rsp,0x18
-=> 0x00007ffff7ded306 <+198>:	bnd jmp r11</pre>
+<pre>0x00007ffff7ded240 +0:	push   rbx
+   0x00007ffff7ded241 +1:	mov    rbx,rsp
+   0x00007ffff7ded244 +4:	and    rsp,0xffffffffffffffc0
+   0x00007ffff7ded248 +8:	sub    rsp,QWORD PTR [rip+0x20f5b9]        # 0x7ffff7ffc808 _rtld_global_ro+168
+   0x00007ffff7ded24f +15:	mov    QWORD PTR [rsp],rax
+   0x00007ffff7ded253 +19:	mov    QWORD PTR [rsp+0x8],rcx
+   0x00007ffff7ded258 +24:	mov    QWORD PTR [rsp+0x10],rdx
+   0x00007ffff7ded25d +29:	mov    QWORD PTR [rsp+0x18],rsi
+   0x00007ffff7ded262 +34:	mov    QWORD PTR [rsp+0x20],rdi
+   0x00007ffff7ded267 +39:	mov    QWORD PTR [rsp+0x28],r8
+   0x00007ffff7ded26c +44:	mov    QWORD PTR [rsp+0x30],r9
+   0x00007ffff7ded271 +49:	mov    eax,0xee
+   0x00007ffff7ded276 +54:	xor    edx,edx
+   0x00007ffff7ded278 +56:	mov    QWORD PTR [rsp+0x240],rdx
+   0x00007ffff7ded280 +64:	mov    QWORD PTR [rsp+0x248],rdx
+   0x00007ffff7ded288 +72:	mov    QWORD PTR [rsp+0x250],rdx
+   0x00007ffff7ded290 +80:	mov    QWORD PTR [rsp+0x258],rdx
+   0x00007ffff7ded298 +88:	mov    QWORD PTR [rsp+0x260],rdx
+   0x00007ffff7ded2a0 +96:	mov    QWORD PTR [rsp+0x268],rdx
+   0x00007ffff7ded2a8 +104:	mov    QWORD PTR [rsp+0x270],rdx
+   0x00007ffff7ded2b0 +112:	mov    QWORD PTR [rsp+0x278],rdx
+   0x00007ffff7ded2b8 +120:	xsave  [rsp+0x40]
+   0x00007ffff7ded2bd +125:	mov    rsi,QWORD PTR [rbx+0x10]
+   0x00007ffff7ded2c1 +129:	mov    rdi,QWORD PTR [rbx+0x8]
+   0x00007ffff7ded2c5 +133:	call   0x7ffff7de6630 _dl_fixup
+   0x00007ffff7ded2ca +138:	mov    r11,rax
+   0x00007ffff7ded2cd +141:	mov    eax,0xee
+   0x00007ffff7ded2d2 +146:	xor    edx,edx
+   0x00007ffff7ded2d4 +148:	xrstor [rsp+0x40]		# dl_runtime_resolve 是没有这条指令
+   0x00007ffff7ded2d9 +153:	mov    r9,QWORD PTR [rsp+0x30]
+   0x00007ffff7ded2de +158:	mov    r8,QWORD PTR [rsp+0x28]
+   0x00007ffff7ded2e3 +163:	mov    rdi,QWORD PTR [rsp+0x20]
+   0x00007ffff7ded2e8 +168:	mov    rsi,QWORD PTR [rsp+0x18]
+   0x00007ffff7ded2ed +173:	mov    rdx,QWORD PTR [rsp+0x10]
+   0x00007ffff7ded2f2 +178:	mov    rcx,QWORD PTR [rsp+0x8]
+   0x00007ffff7ded2f7 +183:	mov    rax,QWORD PTR [rsp]
+   0x00007ffff7ded2fb +187:	mov    rsp,rbx
+   0x00007ffff7ded2fe +190:	mov    rbx,QWORD PTR [rsp]
+   0x00007ffff7ded302 +194:	add    rsp,0x18
+   0x00007ffff7ded306 +198:	bnd jmp r11</pre>
 
 从上图的`_dl_runtime_resolve_xsave`汇编代码中可以看到，从`0x00007ffff7ded2d9`开始，我们可以一次控制所有寄存器的参数，最后通过`jmp r11`进行函数调用，而`r11`可以在`0x00007ffff7ded2ca`由`rax`传入。
 
