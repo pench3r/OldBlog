@@ -12,7 +12,7 @@ title: "linux_64 ROP exploit"
 
 安全机制只开启`NX`和`ASLR`
 
-漏洞程序`vul.c`
+漏洞程序 vul.c
 
 <pre>#include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 
 
 
-编译： `gcc -g -no-pie -fno-stack-protector -o vul64 vul.c`
+编译： <pre>gcc -g -no-pie -fno-stack-protector -o vul64 vul.c</pre>
 
 由于64位的系统默认会开启`PIE`功能，所以编译时需要手动添加关闭。
 
