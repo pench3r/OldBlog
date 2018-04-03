@@ -75,9 +75,9 @@ x64中最常用ROP的是属于`__libc_csu_init`，但是由于它能控制的参
 
 <strong>第一种方法`__libc_csu_init`：</strong>
 
-首先获取内存地址，根据偏移来计算`system`的地址和`/bin/sh`的地址，由于使用ROPgadget并没有搜索到满足我们需求的`ROP`，但是在libc.so中，__libc_csu_init中提供了很有效的ROP链,使用`objdump -d -M intel vul64`查看关于`__libc_csu_init` 
+首先获取内存地址，根据偏移来计算`system`的地址和`/bin/sh`的地址，由于使用ROPgadget并没有搜索到满足我们需求的`ROP`，但是在libc.so中，__libc_csu_init中提供了很有效的ROP链,使用`objdump -d -M intel vul64`查看关于`__libc_csu_init`
 
-<pre>0000000000400590 <__libc_csu_init>:
+0000000000400590 <__libc_csu_init>:
   400590:   41 57                   push   r15 
   400592:   41 56                   push   r14 
   400594:   49 89 d7                mov    r15,rdx
@@ -112,7 +112,6 @@ x64中最常用ROP的是属于`__libc_csu_init`，但是由于它能控制的参
   4005f0:   41 5e                   pop    r14 		# arg2
   4005f2:   41 5f                   pop    r15 		# arg3
   4005f4:   c3                      ret        
-</pre>
 
 可以看到从`0x4005ea`开始，就依次将栈上的数据弹入到`rbx`, `rbp`, `r12`, `r13`, `r14`, `r15`中，在`0x4005d0`，又将`r15`传递给`rdx`(函数的第三个参数)，`r14`传递给`rsi`(函数的第二个参数)，`r13`传递给`edi`(函数的第1个参数)，随后通过`call   QWORD PTR [r12+rbx*8]`来调用函数，`r12`和`rbx`我们也是可以控制。后续会判断rbp，rbx是否相等，如果相等就会继续执行下面的`pop`并且`ret`就可以执行另外一个函数。 这样`libc.so`提供的`ROP`完全满足我们的需求，只是构造会比较麻烦一点。该库是在所有的`elf64`的程序里面都会加载的.
 
