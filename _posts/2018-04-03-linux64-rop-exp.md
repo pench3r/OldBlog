@@ -14,24 +14,24 @@ title: "linux_64 ROP exploit"
 
 漏洞程序 vul.c
 
-<pre>#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <unistd.h>
 
-void vul_func() {
-    char msg[128];
-    read(STDIN_FILENO, msg, 512);
-}
+  void vul_func() {
+      char msg[128];
+      read(STDIN_FILENO, msg, 512);
+  }
 
-int main(int argc, char *argv[]) {
-    vul_func();
-    write(STDOUT_FILENO,"ROP test\n", 9); 
-    return 0;
-}</pre>
+  int main(int argc, char *argv[]) {
+      vul_func();
+      write(STDOUT_FILENO,"ROP test\n", 9); 
+      return 0;
+  }
 
 
 
-编译： <pre>gcc -g -no-pie -fno-stack-protector -o vul64 vul.c</pre>
+编译： gcc -g -no-pie -fno-stack-protector -o vul64 vul.c
 
 由于64位的系统默认会开启`PIE`功能，所以编译时需要手动添加关闭。
 
