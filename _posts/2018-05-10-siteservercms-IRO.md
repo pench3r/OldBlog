@@ -37,7 +37,7 @@ siteserver cms以.net开发，使用的部署方式也是基于预编译的情�
 
 接着开始通过网上公开的漏洞来分析，漏洞主要利用方式是通过访问后台的功能时在cookie中加入以下字段和值
 
-	SITESERVER.ADMINISTRATOR.USERNAME=admin; SITESERVER.ADMINISTRATOR
+	SITESERVER.ADMINISTRATOR.USERNAME=admin
 
 我们来测试向后台文件`siteserver/top.aspx?module=cms`发送请求并带上这个Cookie来检查
 
