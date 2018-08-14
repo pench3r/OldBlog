@@ -3,6 +3,7 @@ layout: post
 title: "[reverse] fly-solution"
 ---
 
+[题目下载](https://github.com/pench3r/pench3r.github.io/blob/master/images/201808/fly.exe?raw=true)
 
 ### 0x00 题目分析 ###
 
