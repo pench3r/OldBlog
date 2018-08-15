@@ -1,11 +1,13 @@
 ---
 layout: post
-title: "国家大学生信息安全实践赛 pwn task_supermarket wp"
+title: "[pwn] 国家大学生信息安全实践赛 task_supermarket wp"
 ---
 
 环境： kali 2017.2 64位
 
 工具： gdb peda pwntools
+
+[题目下载](https://github.com/pench3r/pench3r.github.io/blob/master/images/201805/task_supermarket?raw=true)
 
 #### 0x01 程序功能分析 ####
 
