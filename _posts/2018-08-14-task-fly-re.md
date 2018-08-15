@@ -33,7 +33,7 @@ title: "[reverse] fly-solution"
 
 ![ctf]({{ '/images/201808/task_fly_re_0_3.png' | prepend: site.baseurl }}) 
 
-`+0x00`表示为vftable、`+0x20`代表苍蝇显示的窗体句柄、
+`+0x00`表示为vftable、`+0x20`代表苍蝇显示的窗体句柄(移动操作都是通过这个句柄来进行的)
 
 ![ctf]({{ '/images/201808/task_fly_re_0_4.png' | prepend: site.baseurl }})
 
