@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "看雪2016ctf-第一题-solution"
+title: "[reverse] 看雪2016ctf-第一题-solution"
 ---
 
 ### 0x00 题目分析 ###
