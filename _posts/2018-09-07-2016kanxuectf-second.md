@@ -9,9 +9,9 @@ title: "[Reverse] 看雪2016ctf-第二题-solution"
 
 1. 一开始的切入点，通过`getwindowtext`断点进行跟踪调试，断下后分析之后紧跟的几个函数，简单判断用户的输入长度、是否为数字和字母、以及很关键的一个加密函数，会加密用户的输入，然后返回上层函数
 
-2. 接着会申请新的内存并从42d864处copy数据，又调用解密函数会将传入的数据解密，然后通过后续的4011c0输出到程序的窗体中
+2. 接着会申请新的内存并从`42d864`处`copy`数据，又调用解密函数会将传入的数据解密，然后通过后续的`4011c0`输出到程序的窗体中
 
-3. 跟踪调试到调用41aef1处，后续有跳转，配合`setwindowtext`调试发现当41aef1返回0时，验证失败；判断41aef1为关键的验证函数
+3. 跟踪调试到调用`41aef1`处，后续有跳转，配合`setwindowtext`调试发现当`41aef1`返回0时，验证失败；判断`41aef1`为关键的验证函数
 
 
 ### 0x01 完整分析 ###
@@ -19,7 +19,7 @@ title: "[Reverse] 看雪2016ctf-第二题-solution"
 
 #### 1 确定关键的加密算法RC6 ####
 
-首先通过getwindowtext获取用户的输入，后面进行了简单的判断
+首先通过`getwindowtext`获取用户的输入，后面进行了简单的判断
 
 ![ctf]({{ '/images/201809/kanxue2016_ctf_1_1.png' | prepend: site.baseurl }})
 
@@ -80,7 +80,7 @@ title: "[Reverse] 看雪2016ctf-第二题-solution"
 	.text:004030EF                 pop     eax
 	.text:004030F0                 jmp     short loc_4030F4
 
-识别的关键是通过rc6_keyextend和rc6_desc来识别，通过ida的伪代码对比确认的
+识别的关键是通过`rc6_keyextend`和`rc6_desc`来识别，通过ida的伪代码对比确认的
 
 	.text:00403442                 call    sub_40342C      ; return 0x5163
 	.text:00403447                 mov     ebx, eax
@@ -96,7 +96,7 @@ title: "[Reverse] 看雪2016ctf-第二题-solution"
 
 对比公开的rc6的伪代码可以得出结论为rc6加密(其实这里需要很深的经验来判断，不过这个加密函数不一定非要分析确定出来)，通过rc6的解密程序来对用户的输入进行了加密
 
-接着通过rc6_enc_msg的函数对数据进行了解密，同样是比对伪代码确定的功能
+接着通过`rc6_enc_msg`的函数对数据进行了解密，同样是比对伪代码确定的功能
 
 	.text:0040311B                 mov     [esi+8], edi
 	.text:0040311E                 call    ??2@YAPAXI@Z    ; operator new(uint)
@@ -116,7 +116,7 @@ title: "[Reverse] 看雪2016ctf-第二题-solution"
 	.text:0040314F                 push    1
 	.text:00403151                 pop     eax
 
-这里使用了rc6的加密程序解密了数据，后续通过sub_4011c0输出
+这里使用了`rc6`的加密程序解密了数据，后续通过`sub_4011c0`输出
 
 #### 2 验证函数中的LUA ####
 
@@ -124,7 +124,7 @@ title: "[Reverse] 看雪2016ctf-第二题-solution"
 
 ![ctf]({{ '/images/201809/kanxue2016_ctf_1_3.png' | prepend: site.baseurl }})
 
-查看数据确定为lua的字节码，需要将该数据dump出来，并解行反编译。这里使用工具为luadec，通过vc编译出lua53.dll和luadec，直接解析会发生失败，发现头部的签名被改变为`ls 1 1`，这里将其修改为`LuaS`，`S`代表`lua5.3`
+查看数据确定为lua的字节码，需要将该数据dump出来，并解行反编译。这里使用工具为`luadec`，通过vc编译出`lua53.dll`和`luadec`，直接解析会发生失败，发现头部的签名被改变为`ls 1 1`，这里将其修改为`LuaS`，`S`代表`lua5.3`
 
 ![ctf]({{ '/images/201809/kanxue2016_ctf_1_4.png' | prepend: site.baseurl }})
 
@@ -138,7 +138,7 @@ title: "[Reverse] 看雪2016ctf-第二题-solution"
 
 ![ctf]({{ '/images/201809/kanxue2016_ctf_1_6.png' | prepend: site.baseurl }})
 
-定位到winmain函数中41ad8f函数首先对这2个函数分别解行解密然后注册对应的函数，使用`lua_pushcclosure`将函数压栈，然后配合lua_setglobal进行函数的注册，整理知道`fnGetRegSnToVerify`地址为`sub_4019A2`,`fnCalcUserInputRegSnAfterEnc`地址为`sub_4019C7`.
+定位到`winmain`函数中`41ad8f`函数首先对这2个函数分别解行解密然后注册对应的函数，使用`lua_pushcclosure`将函数压栈，然后配合`lua_setglobal`进行函数的注册，整理知道`fnGetRegSnToVerify`地址为`sub_4019A2`,`fnCalcUserInputRegSnAfterEnc`地址为`sub_4019C7`.
 
 `fnGetRegSnToVerify`会返回固定的32字节数据。
 
