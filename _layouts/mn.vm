@@ -1,0 +1,7 @@
+#set($e="e")
+$e.getClass().forName('java.lang.System').getMethod('getProperty', $e.getClass().forName('java.lang.String')).invoke(null, 'os.name').toString()
+<html>
+<body>
+e
+</body>
+</html>
