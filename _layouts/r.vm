@@ -1,0 +1,9 @@
+#set($exp="exp")
+#set($run=$exp.getClass().forName("java.lang.Runtime"))
+#set($runtime=$run.getRuntime())
+<html>
+<body>
+$runtime
+
+</body>
+</html>

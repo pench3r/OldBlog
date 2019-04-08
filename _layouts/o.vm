@@ -1,8 +1,0 @@
-#set($exp="exp")
-
-<html>
-<body>
-$exp
-
-</body>
-</html>
