@@ -3,6 +3,6 @@
 <html>
 <body>
 $exp
-$exp.getClass().forName("java.lang.Runtime").getRuntime().exec("whoami")
+
 </body>
 </html>
