@@ -1,6 +1,0 @@
-#set($engine="string")
-<html>
-<body>
-$engine
-</body>
-</html>
