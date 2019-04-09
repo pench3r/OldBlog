@@ -5,8 +5,3 @@
 #set ($out=$a.getInputStream())
 
 $chr.toChars(99)
-
-#set ($result="")
-#foreach ($i in [0..10])
-    $str.valueOf($chr.toChars($out.read()))
-#end
