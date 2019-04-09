@@ -10,4 +10,6 @@
     #set($result="$result$tmp")
 #end
 
+$str
+$chr
 $result
