@@ -6,6 +6,5 @@
 
 #set ($result="")
 #foreach ($i in [0..10])
-    #set($tmp=$str.valueOf($chr.toChars($out.read())))
-    $tmp
+    $chr.toChars($out.read())
 #end
