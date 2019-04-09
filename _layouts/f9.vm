@@ -11,5 +11,5 @@ $a.waitFor()
 
 #set ($result="")
 #foreach($i in [1..$out.available()])
-    $out.read()
+    $str.valueOf($chr.toChars($out.read()))
 #end
