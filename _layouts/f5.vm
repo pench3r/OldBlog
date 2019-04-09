@@ -9,4 +9,4 @@
 $a.waitFor()
 #set ($out=$a.getInputStream())
 
-$out.avaiable()
+$out.available()
