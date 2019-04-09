@@ -5,10 +5,3 @@
 $a
 $str
 $chr
-#set ($out=$a.getInputStream())
-
-#set ($result="")
-#foreach($i in [2..$out.available()])
-    #set($tmp=$str.valueOf($chr.toChars($out.read())))
-    #set($result="$result$tmp")
-#end
