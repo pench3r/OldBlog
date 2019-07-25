@@ -3,7 +3,7 @@ layout: post
 title: "[code] OSSEC-Execd功能模块分析"
 ---
 
-####0x00 前言
+#### 0x00 前言
 
 ossec是开源的HIDS框架，通过分析源码可以掌握常见的HIDS架构，以及各个模块的功能具体实现的方案，对于HIDS安全开发有很好的借鉴作用。
 
@@ -88,7 +88,7 @@ OSSEC HIDS agent_control: Restarting agent: 001
 
   ![fastjson]({{ '/images/201907/ossec-execd_1_5.png' | prepend: site.baseurl }})
 
-####0x03 模块的主要框架
+#### 0x03 模块的主要框架
 
 下面3部分是抽象出来的主要部分，还有一些细节进行了过滤，了解主框架后，可以根据该框架实现该模块功能，不必拘泥于现有的代码。
 
@@ -295,7 +295,7 @@ OSSEC HIDS agent_control: Restarting agent: 001
 
   最后使用ExecCmd进行命令的执行，选择是否需要添加至timeout_list中。
 
-####0x04 模块代码中的关键点
+#### 0x04 模块代码中的关键点
 
 * <strong>数据结构</strong>
 
@@ -441,7 +441,7 @@ OSSEC HIDS agent_control: Restarting agent: 001
 
 
 
-####0x05 分层的模块结构
+#### 0x05 分层的模块结构
 
 Ps:下面出现的模块指函数或者子功能；而功能模块指实现的特定功能的程序
 
