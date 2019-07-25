@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "siteserver cms cookie 欺骗漏洞分析"
+title: "[web] siteserver cms cookie 欺骗漏洞分析"
 ---
 
 #### 0x00 前言 ####
