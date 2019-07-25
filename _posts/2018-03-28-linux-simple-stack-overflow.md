@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Linux Simple Stack overflow"
+title: "[pwn] Linux Simple Stack overflow"
 ---
 
 #### 环境准备 ####
