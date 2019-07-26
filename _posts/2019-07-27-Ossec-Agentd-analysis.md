@@ -9,7 +9,7 @@ client使用keystore中存储的key加解密与server的通信数据；从Server
 
 ### 0x01 模块流程图：
 
-![ossec]({{ '/images/201907/ossec-execd_1_1.png' | prepend: site.baseurl }})
+![ossec]({{ '/images/201907/ossec-agentd_1_1.png' | prepend: site.baseurl }})
 
 ### 0x02 关键功能解析：
 
