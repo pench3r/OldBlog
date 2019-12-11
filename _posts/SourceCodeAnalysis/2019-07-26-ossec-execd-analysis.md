@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[code] OSSEC-Execd功能模块分析"
+categories: "SourceCodeAnalysis"
 ---
 
 #### 0x00 前言

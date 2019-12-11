@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[pwn] DynELF && ROP"
+categories: "BinarySecurity"
 ---
 
 #### 0x00 前言 ####

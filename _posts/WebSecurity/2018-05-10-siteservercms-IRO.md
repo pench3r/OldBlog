@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[web] siteserver cms cookie 欺骗漏洞分析"
+categories: "WebSecurity"
 ---
 
 #### 0x00 前言 ####

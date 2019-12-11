@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[code] 实现简易高并发Web server"
+categories: "Coding"
 ---
 
 源代码：https://github.com/pench3r/Program-Study/tree/master/c/webserver

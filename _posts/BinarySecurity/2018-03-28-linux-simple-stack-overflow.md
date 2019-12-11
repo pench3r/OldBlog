@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[pwn] Linux Simple Stack overflow"
+categories: "BinarySecurity"
 ---
 
 #### 环境准备 ####

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[reverse] fly-solution"
+categories: "ReverseEngineering"
 ---
 
 [题目下载](https://github.com/pench3r/pench3r.github.io/blob/master/images/201808/fly.exe?raw=true)

@@ -18,14 +18,45 @@ locales:
         Previous: "Prev"
 
 
+category_archive:
+  type: liquid
+  path: /categories/
+
 
 gems: [jekyll-paginate]
+permalink: /:categories/:title
 paginate: 10
 paginate_path: "/page:num/"
 
 # Build settings
 markdown: kramdown
 theme: minima
+
+include:
+  - _pages
 exclude:
   - Gemfile
   - Gemfile.lock
+  - "*.sublime-project"
+  - "*.sublime-workspace"
+  - vendor
+  - .asset-cache
+  - .bundle
+  - .jekyll-assets-cache
+  - .sass-cache
+  - assets/js/plugins
+  - assets/js/_main.js
+  - assets/js/vendor
+  - Capfile
+  - CHANGELOG
+  - config
+  - Gemfile
+  - Gruntfile.js
+  - gulpfile.js
+  - LICENSE
+  - log
+  - node_modules
+  - package.json
+  - Rakefile
+  - README
+  - tmp

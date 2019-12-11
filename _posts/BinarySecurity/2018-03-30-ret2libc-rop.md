@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[pwn] ret2libc && ROP"
+categories: "BinarySecurity"
 ---
 
 #### 0x00 准备 ####

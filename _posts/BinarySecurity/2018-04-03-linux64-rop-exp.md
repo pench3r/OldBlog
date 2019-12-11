@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[pwn] linux_64 ROP exploit"
+categories: "BinarySecurity"
 ---
 
 #### 0x00 前言 ####

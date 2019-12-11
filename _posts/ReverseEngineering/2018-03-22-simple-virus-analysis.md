@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[reverse] 记一次木马分析"
+categories: "ReverseEngineering"
 ---
 
 #### 0x00 前言

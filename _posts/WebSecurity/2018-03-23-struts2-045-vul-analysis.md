@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[web] s2-045漏洞解析"
+categories: "WebSecurity"
 ---
 
 #### 0x00 前言####

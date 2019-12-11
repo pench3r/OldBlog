@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[pwn] 格式化字符串漏洞解析和利用"
+categories: "BinarySecurity"
 ---
 
 #### 0x00 前言 ####

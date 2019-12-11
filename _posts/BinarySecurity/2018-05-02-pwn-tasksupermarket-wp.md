@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[pwn] 国家大学生信息安全实践赛 task_supermarket wp"
+categories: "BinarySecurity"
 ---
 
 环境： kali 2017.2 64位

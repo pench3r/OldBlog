@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[code] Ossec-Agentd模块分析"
+categories: "SourceCodeAnalysis"
 ---
 
 ### 0x00 模块功能描述：
