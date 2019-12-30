@@ -53,7 +53,7 @@ dl, dd, ol, ul, figure {
  */
 body {
   font-family: Microsoft YaHei, inconsolata, Helvetica, Arial, sans-serif,STHeiti;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.5;
   font-weight: 300;
   color: #222;
@@ -105,12 +105,12 @@ h1, h2, h3, h4, h5, h6 {
  * Links
  */
 a {
-  color: #1764c1;
+  // color: #1764c1;
+	color: #222;
   text-decoration: none; }
   a:visited {
-    color: #3eaad8; }
+    color: #222; }
   a:hover {
-    color: #222;
     text-decoration: underline; }
 
 /**
@@ -330,8 +330,20 @@ pre {
 /**
  * Page content
  */
+
+.wc-container {
+		padding-top: 30px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+}
+
 .page-content {
-  padding: 30px 0; }
+		padding-top: 6%;
+    padding-right: 0px;
+    padding-bottom: 2%;
+    padding-left: 0px;
+}
 
 .page-heading {
   font-size: 20px; }
@@ -342,8 +354,15 @@ pre {
   .post-list > li {
     margin-bottom: 30px; }
 
+.post-item {
+	list-style-type: none;
+	display: flex;
+	margin-bottom: 13px;
+}
+
 .post-meta {
-  font-size: 14px;
+	margin-right: 4%;
+  font-size: 18px;
   color: #00a9ff; }
 
 .post-link {
@@ -608,3 +627,30 @@ div.page-content h5 {
 .pager li.disabled {
     display: none;
 }
+
+.pagination {
+   font-size: 100%;
+    clear: both;
+    margin-top: 1em;
+    padding-top: 1em;
+    width: 100%;
+	float: left;
+}
+
+.pagination ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style-type: none;
+}
+
+.pagination li {
+    display: inline-block;
+   margin: 0 0.2em;
+}
+
+li.first {
+    display: inline-block;
+   margin: 0;
+}
+
