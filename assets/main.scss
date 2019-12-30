@@ -633,7 +633,7 @@ div.page-content h5 {
     clear: both;
     margin-top: 1em;
     padding-top: 1em;
-    width: 100%;
+    max-width: 60%;
 	float: left;
 }
 
@@ -646,11 +646,19 @@ div.page-content h5 {
 
 .pagination li {
     display: inline-block;
+		line-height: 1.725;
    margin: 0 0.2em;
+		padding: 0 .5em;
 }
 
 li.first {
     display: inline-block;
    margin: 0;
+		padding: 0;
+}
+
+li.current-index {
+	text-decoration-line: underline;
+	text-decoration-style: solid;
 }
 
