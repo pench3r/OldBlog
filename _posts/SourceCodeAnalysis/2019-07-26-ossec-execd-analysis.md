@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[code] OSSEC-Execd功能模块分析"
+title: "OSSEC execd功能模块分析"
 categories: "SourceCodeAnalysis"
 ---
 

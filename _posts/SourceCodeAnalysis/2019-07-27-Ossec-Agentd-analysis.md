@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[code] Ossec-Agentd模块分析"
+title: "OSSEC agentd模块分析"
 categories: "SourceCodeAnalysis"
 ---
 

@@ -4,7 +4,7 @@ title: "反序列化-Apache Commons Collections"
 categories: "WebSecurity"
 ---
 
-#### 前言
+#### 0x00 前言
 
 文章涉及的几个关键点：
 
@@ -16,7 +16,7 @@ categories: "WebSecurity"
 
 文中复现使用的环境为jdk6，Apache Commons Collections3.1
 
-#### java反序列化原理
+#### 0x01 java反序列化原理
 
 在java中可以将实现了Serializable/Externalizable接口的类进行序列化，使用ObjectOutputStream.writeobject即可进行序列化操作
 
@@ -33,7 +33,7 @@ rO0AB
 
 如果在重写的readobject中引用攻击者传入的序列化对象数据进行敏感操作也会导致安全问题，例如命令执行、文件读取等
 
-#### Apache Commons Collections利用链
+#### 0x02 Apache Commons Collections利用链
 
 在2015年爆出Apache Commons Collections公共库中存在命令执行利用链，这样就放大了反序列漏洞的危害，同年就导致很多知名的web应用都受到影响。
 
@@ -117,7 +117,7 @@ ps：这里的Transformer为ConstantTransformer和InvokerTransformer的父类，
 
 本文介绍两个利用链：一个基于TransformedMap、一个基于LazyMap
 
-#### AnnotationInvocationHandler反序列化
+#### 0x03 AnnotationInvocationHandler反序列化
 
 在介绍调用链之前，需要关注真正反序列化触发的入口点：sun.reflect.annotation.AnnotationInvocationHandler，该类存在与JDK中，以下代码为该类的readObject函数：
 
@@ -167,7 +167,7 @@ AnnotationInvocationHandler(Class var1, Map<String, Object> var2) {
 
 位置2对应LazyMap调用链
 
-#### 基于TransformedMap的调用链
+#### 0x04 基于TransformedMap的调用链
 
 通过org.apache.commons.collections.map.TransformedMap进行完美触发ChainedTransformer.transform：
 
@@ -275,7 +275,7 @@ public class deserialPoc {
 }
 ```
 
-#### 基于LazyMap的调用链
+#### 0x05 基于LazyMap的调用链
 
 在Apache common collections只要可以触发ChainedTransformer.transform即可，通过"Ysoserial"利用工具可得到通过org.apache.commons.collections.LazyMap进行利用的调用链
 
@@ -394,7 +394,7 @@ java.lang.ClassCastException: java.lang.Integer cannot be cast to java.util.Set
 	at com.sun.proxy.$Proxy0.entrySet(Unknown Source)
 ```
 
-#### 总结
+#### 0x06 总结
 
 反序列化的问题早在2015年就被爆出，但是有长达9个月并未获得足够的关注，后来FoxGlove Security安全团队的`@breenmachine`发布一篇博客，阐述如何利用Apache Commons Collections在实际场景中进行利用，常见的web应用几乎都中枪了
 
