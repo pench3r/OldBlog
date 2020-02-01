@@ -38,7 +38,28 @@ utf8: 是针对unicode的一种实现方式。也就是编码unicode码点为对
 
 Ps：这里解码的时候特定部分有特定的范围，常见的就是python碰到中文时的编码报错以及mysql中截断场景，都有检测到不属于该字符集的编码范围
 
-#### 0x03 总结
+#### 0x03 应用场景
+
+这里通过经典的二次注入作为，实例来更好的理解字符集编码，示例代码：
+
+```
+$conn = mysql_connect('localhost', 'root', 'root');
+mysql_query('set names gbk');
+$name = addslashes($_GET['name']);
+$sql = "select * from user where name='".$name."'";
+$result = mysql_query($sql,$conn);
+```
+
+当提交payload：%bf%27时，整个流程如下：
+
+* 浏览器发送：%bf%27至webserver后再到php中
+* php中addslashs后发送给mysql：\xbf\x5c\x27
+* mysql在经过connectionb编码(character_set_client)后：`縗'`
+* 最后执行sql语句查询，导致单引号逃逸触发漏洞
+
+配合这篇文章也更方便理解：https://www.freebuf.com/articles/web/213142.html
+
+#### 0x04 总结
 
 utf8、GBK、iso-8859-1等都为具体的编码方式，都可以理解为：<strong>unicode码点与特定的十六进制序列映射</strong>
 
