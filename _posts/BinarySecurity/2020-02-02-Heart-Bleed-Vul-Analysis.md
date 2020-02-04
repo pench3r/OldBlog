@@ -389,9 +389,13 @@ sudo ./openssl s_client -connect 127.0.0.1:443
 * Type: 0x01 (heartbeat_request)
 * Payload_length: 0x40 0x00
 
+同时rrec.length表明实际接收Record的数据大小：3字节
+
 ```
 Breakpoint 1, tls1_process_heartbeat (s=0x955950) at t1_lib.c:2556
 2556		unsigned char *p = &s->s3->rrec.data[0], *pl;
+(gdb) p s->s3->rrec.length		/* Record的实际大小 */
+$1 = 3
 (gdb) n
 2559		unsigned int padding = 16; /* Use minimum padding */
 (gdb) p p
@@ -431,7 +435,25 @@ $3 = 16384
 
 ​	由于传入的heartbeat请求长度只包含type+lenght：3字节，因此在服务器的内存区域中读取完type、payload_length后的数据都是越界的数据，此时通过memcpy会泄漏payload长度的越界数据数据
 
-#### 0x04 总结
+#### 0x04 漏洞修复
+
+```c
+/* Read type and payload length first */
+if (1 + 2 + 16 > s->s3->rrec.length)
+    return 0; /* silently discard */
+hbtype = *p++;
+n2s(p, payload);
+if (1 + 2 + payload + 16 > s->s3->rrec.length)
+    return 0; /* silently discard per RFC 6520 sec. 4 */
+pl = p;
+```
+
+添加了两层判断：
+
+* 如果Record的长度只包含type、payload length、padding，但未包含实际的record数据，则直接丢弃
+* 字段中的payload length如果大于实际接收的数据大小，则直接丢弃
+
+#### 0x05 总结
 
 这里分析了漏洞的成因，以及相关的数据结构如何在数据包中映射；
 
