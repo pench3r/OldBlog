@@ -10,11 +10,11 @@ OpenSSL的heartbeat模块中的dtls1_process_heartbeat存在问题，对应源�
 
 #### 0x01 漏洞成因
 
-直接来到关键漏洞函数：dtls1_process_heartbeat(ssl/dl_both.c)
+直接来到关键漏洞函数：tls1_process_heartbeat(ssl/t1_lib.c)和dtls1_process_heartbeat(ssl/dl_both.c)
 
 ```c
 int
-dtls1_process_heartbeat(SSL *s)
+tls1_process_heartbeat(SSL *s)
 {
 unsigned char *p = &s->s3->rrec.data[0], *pl;
 unsigned short hbtype;
@@ -124,11 +124,11 @@ hb2 = h2bin('''
 03 02 	// ProtocolVersion
 00 03		// length
 01			// HeartbeatMessageType: 01->heartbeat_request  02->heartbeat_response
-04 00		// payload_length
+40 00		// payload_length
 ''')
 ```
 
-因此rrec.data[0]对应的位置即为poc中的01，payload最终获取的值为：1024
+因此rrec.data[0]对应的位置即为poc中的01，payload最终获取的值为：16384
 
 n2s宏的定义如下：
 
@@ -136,7 +136,7 @@ n2s宏的定义如下：
 ((payload=(((unsigned int)(p[0]))<< 8)| (((unsigned int)(p[1])) )),p+=2)
 ```
 
-对应的数据内容为：p[0]->04、p[1]->00
+对应的数据内容为：p[0]->40、p[1]->00
 
 在关键的memcpy处，直接引用了payload的值进行复制
 
@@ -347,11 +347,97 @@ r = dtls1_write_bytes(s, TLS1_RT_HEARTBEAT, buffer, 3 + payload + padding);
 
 回传的Record type为24，因此poc会检测该标记位来判定漏洞的触发
 
-#### 0x03 总结
+#### 0x03 实践
+
+环境搭建碰到的问题：
+
+make install时出现如下错误：
+
+```
+cms.pod around line 457: Expected text after =item, not a number 
+```
+
+修复：root下将/usr/bin/pod2man重命名即可
+
+在调试时输出变量值的时候，提示：
+
+```
+<value optimized out>
+```
+
+修复：在编译时使用-d或者-O0
+
+生成自签证书和key
+
+```
+openssl req -newkey rsa:2048 -nodes -keyout rsa_private.key -x509 -days 365 -out cert.crt
+```
+
+测试openssl server端和openssl client端
+
+```
+# server
+sudo ./openssl s_server -cert cert.crt -key rsa_private.key -www -port 443
+# client
+sudo ./openssl s_client -connect 127.0.0.1:443
+```
+
+调试记录：
+
+在tls1_process_heartbeat下断，此时可以观察到&s->s3->rrec.data[0]所指向的数据：
+
+* Type: 0x01 (heartbeat_request)
+* Payload_length: 0x40 0x00
+
+```
+Breakpoint 1, tls1_process_heartbeat (s=0x955950) at t1_lib.c:2556
+2556		unsigned char *p = &s->s3->rrec.data[0], *pl;
+(gdb) n
+2559		unsigned int padding = 16; /* Use minimum padding */
+(gdb) p p
+$1 = (unsigned char *) 0x966568 "\001@"
+(gdb) x/32b p
+					type  |pay_leng| 
+0x966568:	0x01	0x40	0x00	0xd8	0x03	0x02	0x53	0x43
+0x966570:	0x5b	0x90	0x9d	0x9b	0x72	0x0b	0xbc	0x0c
+0x966578:	0xbc	0x2b	0x92	0xa8	0x48	0x97	0xcf	0xbd
+0x966580:	0x39	0x04	0xcc	0x16	0x0a	0x85	0x03	0x90
+```
+
+可以看到获取到的payload的值为：16384
+
+```
+(gdb) n
+2563		n2s(p, payload);
+(gdb) n
+2564		pl = p;
+(gdb) p payload
+$3 = 16384
+```
+
+最后在执行memcpy时，pl指向的数据如下：
+
+```
+(gdb) n
+2586			memcpy(bp, pl, payload);
+(gdb) x/32b pl
+0x96656b:	0xd8	0x03	0x02	0x53	0x43	0x5b	0x90	0x9d
+0x966573:	0x9b	0x72	0x0b	0xbc	0x0c	0xbc	0x2b	0x92
+0x96657b:	0xa8	0x48	0x97	0xcf	0xbd	0x39	0x04	0xcc
+0x966583:	0x16	0x0a	0x85	0x03	0x90	0x9f	0x77	0x04
+```
+
+通过poc调试总结得出：
+
+​	由于传入的heartbeat请求长度只包含type+lenght：3字节，因此在服务器的内存区域中读取完type、payload_length后的数据都是越界的数据，此时通过memcpy会泄漏payload长度的越界数据数据
+
+#### 0x04 总结
 
 这里分析了漏洞的成因，以及相关的数据结构如何在数据包中映射；
 
 漏洞的原理相对比较简单，但是要找到相关数据结构在网络数据包中的位置是比较困难的，如果没有前人的分析做参考，那可能需要去通过源码、官方文档去找答案
+
+后来发现可以直接通过[rfc中的TLS协议标准](https://tools.ietf.org/html/rfc5246#section-6.2.1)获取整个流程、各个子协议的格式等信息；
 
 参考： 
 
@@ -360,3 +446,4 @@ https://yaofeifly.github.io/2017/04/07/heartbleed/
 http://blog.fourthbit.com/2014/12/23/traffic-analysis-of-an-ssl-slash-tls-session/
 
 https://www.ibm.com/support/knowledgecenter/SSB23S_1.1.0.12/gtps7/s5rcd.html
+
